@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="category_director" model="res.partner.category">
+        <field name="name">Director</field>
+    </record>
+    <record id="category_actor" model="res.partner.category">
+        <field name="name">Actor</field>
+    </record>
+</odoo>

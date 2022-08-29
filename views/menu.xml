@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--ACCION PARA MENÚ PRESUPUESTO-->
+    <record id="action_open_presupuesto_nueva" model="ir.actions.act_window">
+        <field name="name">Presupuesto</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">presupuesto</field>
+        <field name="view_mode">tree,form,kanban</field>
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Presupuestos
+            </p>
+            <p>
+                No hay filtros de búsqueda aplicados para generar reporte
+            </p>
+        </field>
+    </record>
+    <!--ACCION PARA MENÚ RECURSO CINEMATOGRÁFICO-->
+    <record id="action_open_recurso_cinematografico" model="ir.actions.act_window">
+        <field name="name">Recurso.Cinematografico</field>
+        <field name="res_model">recurso.cinematografico</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!--ACCION PARA MENÚ WIZARD-->
+    <record id="action_open_wizard" model="ir.actions.act_window">
+        <field name="name">Actualizar Campo Vista General</field>
+        <field name="res_model">update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    <!--MENÚ-->
+    <menuitem id="peliculas" name="Peliculas"/>
+    <menuitem id="menu_horizontal" name="Mis Modelos" parent="peliculas"/>
+    <menuitem id="menu_vertical_presupuesto" name="Presupuesto" parent="menu_horizontal" action="action_open_presupuesto_nueva"/>
+    <menuitem id="menu_vertical_recurso_cinematografico" name="Recurso Cinematografico" parent="menu_horizontal" action="action_open_recurso_cinematografico"/>
+    <menuitem id="menu_vertical_wizard" name="Wizard Deplegable" parent="menu_horizontal" action="action_open_wizard"/>
+</odoo>

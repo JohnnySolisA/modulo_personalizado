@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="ListView.buttons">
+        <t t-jquery="button.o_list_button_add" t-operation="before">
+            <button t-if="widget.modelName == 'presupuesto'" class="btn btn-primary oe_action_button mr-2" type="button" accesskey="f">
+                Borrar Productos
+            </button>
+        </t>
+    </t>
+</templates>

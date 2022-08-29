@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="secuencia_pelicula" model="ir.sequence">
+        <field name="name">Secuencia de Peliculas</field>
+        <field name="implementation">no_gap</field>
+        <field name="code">secuencia.pelicula</field>
+        <field name="prefix">PP/</field>
+        <field name="suffix">/%(year)s</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>
+

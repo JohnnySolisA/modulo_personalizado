@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--VISTA FORMULARIO PRESUPUESTO-->
+    <record id="view_presupuesto_form" model="ir.ui.view">
+        <field name="name">presupuesto.form</field>
+        <field name="model">presupuesto</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Aprobar" type="object" name="aprobar_presupuesto" class="oe_highlight" states="borrador"/>
+                    <button string="Cancelar" type="object" name="cancelar_presupuesto" states="aprobado"/>
+                    <button string="Pop-Up" type="action" name="%(action_open_update_wizard)d" states="aprobado" groups="modulo_personalizado.group_modulo_personalizado_administrador"/>
+                    <field name="state" widget="statusbar" statusbar_visible="borrador,aprobado"/>
+                </header>
+                <div class="alert alert-info" role="alert" style="margin-bottom: 0" attrs="{'invisible': [('desc_clas', '=', False)]}">
+                    <field name="desc_clas" readonly="1" force_save="1"/>
+                </div>
+                <div class="alert alert-success" role="alert" style="margin-bottom: 0" attrs="{'invisible': [('desc_clas', '=', False)]}">
+                    <field name="desc_clas" readonly="1" force_save="1"/>
+                </div>
+                <div class="alert alert-warning" role="alert" style="margin-bottom: 0" attrs="{'invisible': [('desc_clas', '=', False)]}">
+                    <field name="desc_clas" readonly="1" force_save="1"/>
+                </div>
+                <div class="alert alert-danger" role="alert" style="margin-bottom: 0" attrs="{'invisible': [('desc_clas', '=', False)]}">
+                    <field name="desc_clas" readonly="1" force_save="1"/>
+                </div>
+                <sheet>
+                    <!--
+                    <center>
+                        <h1 style="color : red">
+                            Titulo!!
+                        </h1>
+                    </center>
+                    -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_state"
+                                type="object"
+                                class="oe_stat_button"
+                                string="Cambiar Atributo"
+                                icon="fa-trophy"
+                        />
+                    </div>
+                    <widget name="web_ribbon"
+                            title="Archivado"
+                            bg_color="bg-danger"
+                            attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <field name="image_1920"
+                           widget="image"
+                           class="oe_avatar"
+                           options="{'preview_image': 'image_128', 'size': ['',128]}"
+                    />
+                    <div class ="oe_title">
+                        <div class="o_row">
+                            <field name="active" invisible="1"/>
+                            <h1 style="display: flex;">
+                                <field name="name"
+                                       placeholder="Nombre de la pelicula"
+                                       default_focus="1"
+                                       class="oe_inline"
+                                />
+                                <field name="puntuacion"
+                                       widget="percentpie"
+                                       string=" "
+                                       style="padding-left: 10px"
+                                       class="oe_inline"
+                                />
+                                <field name="puntuacion_numero"
+                                       placeholder="Puntuación de Usuario"
+                                       class="oe_edit_only oe_inline"
+                                />
+                            </h1>
+                        </div>
+                        <div class="o_row" style="display: flex;">
+                            <field name="clasificacion"/>
+                            <spam class="fa-circle"
+                                  title="Circulo"
+                                  atrrs="{'invisible': [('clasificacion', '=', False),('fecha_estreno', '=', False)]}"
+                                  style="font-size: 8px; padding: 5px 5px;"
+                            />
+                            <field name="fecha_estreno"/>
+                        </div>
+                        <div class="o_row">
+                            <field name="genero_ids"
+                                   widget="many2many_tags"
+                                   style="display: flex;"
+                                   options="{'color_field': 'color'}"
+                            />
+                        </div>
+                    </div>
+                    <group string="Datos Principales" style="margin-top: -30px;">
+                        <field name="general"
+                               placeholder="Vista General..."
+                               attrs="{'readonly': [('state', '!=', 'borrador')]}"
+                        />
+                        <group>
+                            <field name="director_id"
+                                   domain="[('category_id', 'in', [categoria_director_id])]"
+                                   options="{'no_create': True, 'no_open':True}"
+                            />
+                            <field name="categoria_director_id" invisible="1"/>
+                            <field name="link_trailer" widget="url"/>
+                            <field name="fecha_aprobado"/>
+                            <field name="num_presupuesto"/>
+                        </group>
+                        <group>
+                            <field name="es_libro" widget="boolean_toggle"/>
+                            <field name="libro_filename" invisible="1"/>
+                            <field name="libro"
+                                   attrs="{'invisible': [('es_libro', '=', False)]}"
+                                   filename="libro_filename"
+                            />
+                        </group>
+                    </group>
+                    <separator string="Detalles"/>
+                    <h1 class="display-1">Ejemplo h1 display-1</h1>
+                    <hr style="border-color:red;"/>
+                    <notebook>
+                        <page string="Presupuesto">
+                            <group>
+                                <group>
+                                    <field name="num_presupuesto"/>
+                                    <field name="fecha_creacion"/>
+                                    <field name="fecha_aprobado"/>
+                                </group>
+                                <group>
+                                    <field name="campos_ocultos"
+                                           widget="boolean_toggle"
+                                           groups="modulo_personalizado.group_modulo_personalizado_administrador"
+                                    />
+                                    <field name="currency_id"/>
+                                </group>
+                            </group>
+                            <field  name="detalle_ids">
+                                <tree editable="bottom">
+                                    <control>
+                                        <create name="add_product_control" string="Agregar Recurso Cinematográfico"/>
+                                    </control>
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="imagen" widget="image" options="{'size': [80,50]}" optional="show"/>
+                                    <field name="name"/>
+                                    <field name="producto_id"/>
+                                    <field name="descripcion" optional="show"/>
+                                    <field name="contacto_id"
+                                           attrs="{'column_invisible': [('parent.campos_ocultos', '=', False)]}"/>
+                                    <field name="cantidad"/>
+                                    <field name="precio"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="importe" force_save="1"/>
+                                </tree>
+                            </field>
+                            <group col="6" class="mt-2 mt-md-0">
+                                <group colspan="4">
+                                    <field name="terminos" nolabel="1" placeholder="Terminos y Condiciones"/>
+                                </group>
+                                <group colspan="2" class="oe_subtotal_footer oe_right">
+                                    <field name="base" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="impuestos"/>
+                                    <div class="oe_subtotal_footer_separator oe_line o_td_label">
+                                        <label for="total"/>
+                                    </div>
+                                    <field name="total"
+                                           nolabel="1"
+                                           class="oe_subtotal_footer_separator"
+                                           widget="monetary"
+                                           options="{'currency_field': 'currency_id'}"
+                                    />
+                                    <div class="oe_clear"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Otra Info">
+                            <group>
+                                <field name="actores_id"
+                                       domain="[('category_id', 'in', [categoria_actor_id])]"
+                                       options="{'no_create': True, 'no_open':True}"
+                                       widget="many2many_tags"
+                                />
+                                <field name="categoria_actor_id" invisible="1"/>
+                                <field name="opinion"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!--VISTA LISTA PRESUPUESTO-->
+    <record id="view_presupuesto_tree" model="ir.ui.view">
+        <field name="name">view.presupuesto.tree</field>
+        <field name="model">presupuesto</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="state == 'cancelado'" decoration-success="state == 'aprobado'">
+                <field name="name"/>
+                <field name="num_presupuesto"/>
+                <field name="fecha_creacion"/>
+                <field name="total" sum="importe_total"/>
+                <field name="state"
+                       widget="badge"
+                       decoration-danger="state == 'cancelado'"
+                       decoration-success="state == 'aprobado'"
+                />
+                <button name="crear_registro" string="Crear" class="oe_highlight" type="object"/>
+                <button name="actualizar_registro" string="Modificar" class="oe_highlight" type="object"/>
+                <button name="eliminar_registro" string="Eliminar" class="oe_highlight" type="object"/>
+                <button name="filter" string="Filtrado" class="oe_highlight" type="object"/>
+                <button name="map" string="Operacion" class="oe_highlight" type="object"/>
+                <button name="sort" string="Ordenar" class="oe_highlight" type="object"/>
+                <button name="aplicar_sql" string="SQL" class="oe_highlight" type="object"/>
+            </tree>
+            <!--
+                decoration-muted: records will be light grey
+                decoration-danger: records will be light red
+                decoration-success: records will be light green
+                decoration-primary: records will be light purple
+                decoration-info: records will be light blue
+                decoration-warning: records will be light brown
+                decoration-bf: records will be bold
+                decoration-it: records will be italic
+
+                widgets :
+                https://konodoo.com/blog/konodoo-blog-de-tecnologia-1/post/40-widgets-de-odoo-para-crear-interfaces-llamativas-7
+                https://www.cybrosys.com/blog/widgets-list-in-odoo-14
+            -->
+        </field>
+    </record>
+
+    <!--VISTA KANBAN PRESUPUESTO-->
+    <record id="view_presupuesto_kanban" model="ir.ui.view">
+        <field name="name">vista.presupuesto.kanban</field>
+        <field name="model">presupuesto</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="currency_id"/>
+                <field name="name"/>
+                <field name="clasificacion"/>
+                <field name="genero_ids"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <img t-att-src="kanban_image('presupuesto', 'image_128', record.id.raw_value)"
+                                     class="oe_image_64_contain" alt="IMG"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                                    [<field name="clasificacion"/>]
+                                <div>
+                                    <field name="genero_ids"/>
+                                </div>
+                                <div>
+                                    <field name="total"
+                                           widget="monetary"
+                                           options="{'currency_field': 'currency_id', 'field:digits': True}"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--VISTA SEARCH PRESUPUESTO-->
+    <record id="view_presupuesto_search" model="ir.ui.view">
+        <field name="name">Vista.Presupuesto.Search</field>
+        <field name="model">presupuesto</field>
+        <field name="arch" type="xml">
+            <search string="Filtrar Presupuesto">
+                <field name="name"/>
+                <field name="num_presupuesto"/>
+                <field name="fecha_creacion"/>
+                <field name="state"/>
+                <group expand="0" string="Group By">
+                    <filter name="groupby_name"
+                            string="Nombre"
+                            domain="[]"
+                            context="{'gruop_by':'name'}"
+                            help="Agrupar por Nombre"
+                    />
+                    <filter name="groupby_fecha_creacion"
+                            string="Fecha de Creación"
+                            domain="[]"
+                            context="{'gruop_by':'fecha_creacion:year'}"
+                            help="Agrupar por Fecha de Creación"
+                    />
+                </group>
+                <filter name="groupby_state"
+                        string="Aprobado"
+                        domain="[('state', '=' ,'aprobado')]"
+                        help="Presupuestos Aprobados"
+                />
+            </search>
+        </field>
+    </record>
+</odoo>

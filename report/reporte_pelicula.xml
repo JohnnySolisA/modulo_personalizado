@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_report_presupuesto" model="ir.actions.report">
+        <field name="name">Presupuesto</field>
+        <field name="model">presupuesto</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">modulo_personalizado.report_presupuesto</field>
+        <field name="report_file">modulo_personalizado.report_presupuesto</field>
+        <field name="print_report_name">('Presupuesto - %s' %(object.name))</field>
+        <field name="binding_model_id" ref="model_presupuesto"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_presupuesto">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <center>
+                            <t t-if="o.state == 'cancelado'">
+                                <div class="alert alert-danger" role="alert">
+                                    El estado de este presupuesto es Cancelado
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <div class="alert alert-success" role="alert">
+                                    El estado de este presupuesto es Aprobado
+                                </div>
+                            </t>
+                        </center>
+                        <div class="row">
+                            <div class="col-3">
+                                <img t-attf-src="data:image/*;base64,{{o.image_1920}}" class="rounded float-start" style="max-width:200px;"/>
+                            </div>
+                            <div class="col-9">
+                                <h2>
+                                    <span t-field="o.name"/>
+                                </h2>
+                                <ul class="list-inline" style="font-size:20px;">
+                                    <li>Clasificación:
+                                        <span t-field="o.clasificacion"/>
+                                    </li>
+                                    <li>Estreno:
+                                        <span t-field="o.fecha_estreno"/>
+                                    </li>
+                                    <li t-if="o.genero_ids">Género:
+                                        <span t-field="o.genero_ids"/>
+                                    </li>
+                                </ul>
+                                <ul class="list-inline" style="font-size:20px;padding-top: 30px;">
+                                    <li>Creado por:
+                                        <span t-field="o.create_uid"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <table class="table table-sm" style="margin-top:30px;">
+                            <thead>
+                                <th>Imagen</th>
+                                <th>Recurso</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Importe</th>
+                            </thead>
+                            <tbody>
+                                <t t-set="cant_lineas" t-value="0"/>
+                                <tr t-foreach="o.detalle_ids" t-as="line">
+                                    <td>
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td>
+                                        <img t-attf-src="data:image/*;base64,{{line.imagen}}" class="rounded float-start" style="max-width:80px;"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.cantidad"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.precio"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.importe"/>
+                                    </td>
+                                    <t t-set="cant_lineas" t-value="cant_lineas+1"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row justify-content-end" style="padding-top:30px;">
+                            <div class="col-3">
+                                <table class="table table-sm">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong><td>Subtotal:</td></strong>
+                                                <td class="text-right">
+                                                    <span
+                                                        t-field="o.base"
+                                                    />
+                                                </td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong><td>Impuestos:</td></strong>
+                                                <td class="text-right">
+                                                    <span
+                                                        t-field="o.impuestos"
+                                                    />
+                                                </td>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong><td>Total:</td></strong>
+                                                <td class="text-right">
+                                                    <span
+                                                        t-field="o.total"
+                                                    />
+                                                </td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:30px;">
+                            <span>El presente Presupuesto cuenta con <t t-esc="cant_lineas"/> Lineas de Detalle.</span>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

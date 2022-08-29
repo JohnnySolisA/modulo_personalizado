@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_update_wizard" model="ir.ui.view">
+        <field name="name">view.update.wizard</field>
+        <field name="model">update.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="filename_archivo" invisible="1"/>
+                        <field name="archivo" filename="filename_archivo"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Actualizar" class="oe_highlight" type="object" name="update_vista_general"/>
+                    <button string="Cancelar"  special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_update_wizard" model="ir.actions.act_window">
+        <field name="name">Actualizar Campo Vista General</field>
+        <field name="res_model">update.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
