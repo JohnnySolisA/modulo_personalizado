@@ -2,7 +2,7 @@
 
 {
     'name' : 'Módulo Personalizado',
-    'version' : '1.1',
+    'version' : '1.1.0',
     'depends' : [
         'contacts',
         'mail',
