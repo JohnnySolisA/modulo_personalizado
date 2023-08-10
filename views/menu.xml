@@ -35,4 +35,22 @@
     <menuitem id="menu_vertical_presupuesto" name="Presupuesto" parent="menu_horizontal" action="action_open_presupuesto_nueva"/>
     <menuitem id="menu_vertical_recurso_cinematografico" name="Recurso Cinematografico" parent="menu_horizontal" action="action_open_recurso_cinematografico"/>
     <menuitem id="menu_vertical_wizard" name="Wizard Deplegable" parent="menu_horizontal" action="action_open_wizard"/>
+
+
+
+    <!--ACCIÓN ORIGEN CLIENTE
+    <record id="accion_origen_cliente" model="ir.actions.act_window">
+        <field name="name">Origen</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">origen.cliente</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="altecfase_ventas.view_origen_cliente_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face"/>
+            <p>
+                No se ha generado ningún dato de Origen!
+            </p>
+        </field>
+    </record>
+    -->
 </odoo>
